@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Community Need</title>
+    <style>
+        body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #f4f6fb; }
+        .form-wrap { max-width: 460px; margin: 28px auto; background: #fff; border: 1px solid #d8e2ec; border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(15,23,42,0.08); }
+        h2 { margin: 0 0 10px; color: #2f855a; }
+        label { display: block; margin: 10px 0 4px; color: #344054; }
+        input, select, button { width: 100%; border: 1px solid #cbd5e0; border-radius: 8px; padding: 9px 10px; font-size: 0.93rem; }
+        input:focus, select:focus { outline: none; border-color: #2b6cb0; box-shadow: 0 0 0 2px rgba(66,153,225,0.2); }
+        button { margin-top: 14px; background: #2b6cb0; color: #fff; border: none; cursor: pointer; }
+        .foot { margin-top: 12px; text-align: center; }
+        .foot a { color: #2b6cb0; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="form-wrap">
+        <h2>Add Community Need</h2>
+        <form method="POST">
+            <label for="area">Location</label>
+            <input id="area" name="area" type="text" placeholder="e.g., T. Nagar" required>
+
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="Food">Food</option>
+                <option value="Medical">Medical</option>
+                <option value="Education">Education</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="urgency">Urgency (1-10)</label>
+            <input id="urgency" name="urgency" type="number" min="1" max="10" required>
+
+            <button type="submit">Save Need</button>
+        </form>
+        <div class="foot"><a href="/">Back to Dashboard</a></div>
+    </div>
+</body>
+</html>

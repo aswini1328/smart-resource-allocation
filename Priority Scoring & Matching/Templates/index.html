@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Needs Dashboard</title>
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --card: #ffffff;
+            --border: #d9e2ee;
+            --text: #1a202c;
+            --muted: #4a5568;
+            --low: #c6f6d5;
+            --medium: #fefcbf;
+            --high: #fed7d7;
+            --shadow: 0 2px 9px rgba(15,23,42,0.08);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .container {
+            max-width: 1180px;
+            margin: 18px auto;
+            padding: 0 10px;
+        }
+        .topbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .topbar h1 {
+            margin: 0;
+            font-size: clamp(1.35rem, 2vw, 1.85rem);
+        }
+        .topbar a {
+            text-decoration: none;
+            color: #fff;
+            background: #2b6cb0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-left: 0;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 11px 12px;
+        }
+        .card small { color: var(--muted); display: block; margin-bottom: 4px; }
+        .card strong { font-size: 1.35rem; }
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .legend span { font-size: 0.82rem; padding: 6px 9px; border-radius: 8px; border: 1px solid var(--border); }
+        .legend .low { background: var(--low); }
+        .legend .medium { background: var(--medium); }
+        .legend .high { background: var(--high); }
+        .row-low { background: var(--low); }
+        .row-medium { background: var(--medium); }
+        .row-high { background: var(--high); }
+        .table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+        table { width: 100%; min-width: 760px; border-collapse: collapse; }
+        th, td { padding: 12px 9px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.9rem; }
+        th { background: #2f855a; color: #fff; position: sticky; top: 0; z-index: 2; }
+        tr:nth-child(even) td { background: #f8fafc; }
+        .badge { display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; border: 1px solid #b6c2cf; }
+        .badge.low { background: #daf4df; }
+        .badge.medium { background: #fff9c1; }
+        .badge.high { background: #ffd2d2; }
+        .match-list { font-size: 0.84rem; }
+        @media (max-width: 760px) {
+            .topbar { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <h1>Community Needs Dashboard</h1>
+            <div>
+                <a href="/add">Add Need</a>
+                <a href="/add_volunteer" style="margin-left: 8px;">Add Volunteer</a>
+            </div>
+        </div>
+
+        {% set total = needs|length %}
+        {% set avg_score = (needs|map(attribute='score')|sum / (total if total > 0 else 1))|round(1) %}
+        {% set high_count = needs|selectattr('score', 'ge', 8)|list|length %}
+        {% set medium_count = needs|selectattr('score', 'ge', 5)|list|length - high_count %}
+        {% set low_count = needs|selectattr('score', 'lt', 5)|list|length %}
+
+        <div class="summary">
+            <div class="card"><small>Total tasks</small><strong>{{ total }}</strong></div>
+            <div class="card"><small>Avg score</small><strong>{{ avg_score }}</strong></div>
+            <div class="card"><small>High priority</small><strong>{{ high_count }}</strong></div>
+            <div class="card"><small>Medium priority</small><strong>{{ medium_count }}</strong></div>
+            <div class="card"><small>Low priority</small><strong>{{ low_count }}</strong></div>
+        </div>
+
+        <div class="legend">
+            <span class="low">Low: score &lt; 5</span>
+            <span class="medium">Medium: score 5–7</span>
+            <span class="high">High: score ≥ 8</span>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Location</th>
+                        <th>Category</th>
+                        <th>Urgency</th>
+                        <th>Score</th>
+                        <th>Priority</th>
+                        <th>Matched Volunteers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for need in needs %}
+                        {% set score = need['score'] %}
+                        {% if score >= 8 %}
+                            {% set row_class = 'row-high' %}
+                            {% set priority_label = 'High' %}
+                            {% set badge_class = 'high' %}
+                        {% elif score >= 5 %}
+                            {% set row_class = 'row-medium' %}
+                            {% set priority_label = 'Medium' %}
+                            {% set badge_class = 'medium' %}
+                        {% else %}
+                            {% set row_class = 'row-low' %}
+                            {% set priority_label = 'Low' %}
+                            {% set badge_class = 'low' %}
+                        {% endif %}
+                        <tr class="{{ row_class }}">
+                            <td>{{ need['id'] }}</td>
+                            <td>{{ need['area'] }}</td>
+                            <td>{{ need['category'] }}</td>
+                            <td>{{ need['urgency'] }}</td>
+                            <td>{{ need['score']|round(1) }}</td>
+                            <td><span class="badge {{ badge_class }}">{{ priority_label }}</span></td>
+                            <td class="match-list">
+                                {% set assigned = matches.get(need['id'], '') %}
+                                {% if assigned %}
+                                    {{ assigned }}
+                                {% else %}
+                                    <em>No match assigned</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if total == 0 %}
+                        <tr><td colspan="7" style="text-align:center;padding:16px;">No tasks available yet.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 style="margin-top:16px;">Volunteers</h2>
+        <div class="table-wrap" style="margin-top:8px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Skills</th>
+                        <th>Location</th>
+                        <th>NGO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in volunteers %}
+                        <tr>
+                            <td>{{ v['id'] }}</td>
+                            <td>{{ v['name'] }}</td>
+                            <td>
+                                {% if 'skills' in v.keys() %}
+                                    {{ v['skills'] }}
+                                {% elif 'skill' in v.keys() %}
+                                    {{ v['skill'] }}
+                                {% else %}
+                                    n/a
+                                {% endif %}
+                            </td>
+                            <td>{{ v['location'] }}</td>
+                            <td>{{ v['ngo'] if 'ngo' in v.keys() and v['ngo'] else 'n/a' }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% if volunteers|length == 0 %}
+                        <tr><td colspan="4" style="text-align:center;padding:16px;">No volunteers added yet.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
