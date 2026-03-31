@@ -55,9 +55,6 @@ To improve efficiency, the system suggests suitable volunteers for each task.
 
 ---
 
-### Preview
-![Dashboard](Dashboard.PNG)
-
 
 ## 👥 Team
 
