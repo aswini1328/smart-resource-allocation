@@ -57,8 +57,9 @@ To improve efficiency, the system suggests suitable volunteers for each task.
 
 
 ## 👥 Team
-
-- **Angellina Joyce Paul**  
-- **Aswini**  
+ 
+- **Aswini**
+- **Angellina Joyce Paul**
+- **Aparajitha**
 - **Preethi**  
-- **Aparajitha**  
+  
