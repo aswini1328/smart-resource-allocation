@@ -53,6 +53,10 @@ To improve efficiency, the system suggests suitable volunteers for each task.
 - Reduces manual effort in assigning volunteers  
 - Demonstrates a **data-driven approach to social impact**
 
+---
+
+### Preview
+![Dashboard](Dashboard.PNG)
 
 
 ## 👥 Team
