@@ -4,6 +4,16 @@ The project uses simple HTML templates to provide a clean and user-friendly inte
 
 ---
 
+## 📸 Preview
+
+### ➕ Add Need Form
+![Add Need](assets/ADD need.PNG)
+
+### 👤 Add Volunteer Form
+![Add Volunteer](assets/ADD vol.PNG)
+
+---
+
 ### 📄 `index.html` – Dashboard
 - Displays all community needs in a structured table  
 - Shows:
