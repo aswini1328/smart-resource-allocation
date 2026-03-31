@@ -7,10 +7,10 @@ The project uses simple HTML templates to provide a clean and user-friendly inte
 ## 📸 Preview
 
 ### ➕ Add Need Form
-![Add Need](ADD need.PNG)!
+![Add Need](ADD_need.PNG)!
 
 ### 👤 Add Volunteer Form
-![Add Volunteer](ADD vol.PNG)
+![Add Volunteer](ADD_vol.PNG)
 
 ---
 
